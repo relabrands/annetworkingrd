@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTheme } from "next-themes"
+import OnboardingFlow from "@/components/onboarding/OnboardingFlow"
 import {
   LayoutDashboard,
   Compass,
@@ -1255,10 +1256,30 @@ function Profile({ onShowToast }: { onShowToast: (message: string) => void }) {
 
 // Main App
 export default function NexusApp() {
+  const [onboardingDone, setOnboardingDone] = useState<boolean | null>(null)
   const [activeTab, setActiveTab] = useState<"dashboard" | "discover" | "matches" | "profile">("dashboard")
   const [toast, setToast] = useState<string | null>(null)
   const [introModal, setIntroModal] = useState<Member | null>(null)
+
+  useEffect(() => {
+    const done = localStorage.getItem("nexus_onboarding_done")
+    setOnboardingDone(!!done)
+  }, [])
+
+  const handleOnboardingComplete = () => {
+    localStorage.setItem("nexus_onboarding_done", "1")
+    setOnboardingDone(true)
+  }
+
+  // Show nothing until we know if onboarding was done
   const [detailModal, setDetailModal] = useState<Member | null>(null)
+
+  if (onboardingDone === null) return null
+
+  // Show onboarding if not done
+  if (!onboardingDone) {
+    return <OnboardingFlow onComplete={handleOnboardingComplete} />
+  }
 
   const showToast = (message: string) => setToast(message)
 
