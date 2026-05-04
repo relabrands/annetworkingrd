@@ -1234,6 +1234,15 @@ function Profile({ onShowToast }: { onShowToast: (message: string) => void }) {
         </div>
       </div>
 
+      {/* Settings (Mobile only) */}
+      <div className="md:hidden bg-[#111118] border border-[#2A2A3A] rounded-xl p-6 flex flex-row items-center justify-between">
+        <div>
+          <h3 className="font-semibold text-[#E2E8F0]">Theme</h3>
+          <p className="text-xs text-[#94A3B8]">Choose your preferred theme</p>
+        </div>
+        <ThemeToggle />
+      </div>
+
       <button
         onClick={() => onShowToast("Profile updated!")}
         className="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-3 rounded-lg font-medium transition-colors"
