@@ -2,6 +2,8 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { auth } from "@/lib/firebase"
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
 import {
   Sparkles,
   Users,
@@ -65,12 +67,43 @@ const steps = [
 ]
 
 // ─── Auth Screen ─────────────────────────────────────────────────────────────
-function AuthScreen({ onBack }: { onBack: () => void }) {
+function AuthScreen({ onBack, onComplete }: { onBack: () => void, onComplete: () => void }) {
   const [mode, setMode] = useState<"login" | "register">("register")
   const [showPass, setShowPass] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [name, setName] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError("")
+    setLoading(true)
+
+    try {
+      if (mode === "register") {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+        if (name) {
+          await updateProfile(userCredential.user, { displayName: name })
+        }
+      } else {
+        await signInWithEmailAndPassword(auth, email, password)
+      }
+      onComplete()
+    } catch (err: any) {
+      console.error(err)
+      if (err.code === "auth/email-already-in-use") {
+        setError("Este correo ya está en uso.")
+      } else if (err.code === "auth/invalid-credential" || err.code === "auth/wrong-password") {
+        setError("Credenciales incorrectas.")
+      } else {
+        setError("Ocurrió un error. Inténtalo de nuevo.")
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <motion.div
@@ -140,7 +173,13 @@ function AuthScreen({ onBack }: { onBack: () => void }) {
         </div>
 
         {/* Form */}
-        <div className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {error && (
+            <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">
+              {error}
+            </div>
+          )}
+
           <AnimatePresence mode="wait">
             {mode === "register" && (
               <motion.div
@@ -170,6 +209,7 @@ function AuthScreen({ onBack }: { onBack: () => void }) {
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4A4A5A]" />
               <input
                 type="email"
+                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="tu@empresa.com"
@@ -184,6 +224,8 @@ function AuthScreen({ onBack }: { onBack: () => void }) {
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4A4A5A]" />
               <input
                 type={showPass ? "text" : "password"}
+                required
+                minLength={6}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
@@ -201,28 +243,31 @@ function AuthScreen({ onBack }: { onBack: () => void }) {
 
           {mode === "login" && (
             <div className="text-right">
-              <button className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">
+              <button type="button" className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">
                 ¿Olvidaste tu contraseña?
               </button>
             </div>
           )}
-        </div>
 
-        {/* CTA */}
-        <div className="mt-8">
-          <motion.button
-            whileTap={{ scale: 0.98 }}
-            className="w-full py-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl text-base shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-all"
-          >
-            {mode === "register" ? "Crear cuenta gratis" : "Iniciar sesión"}
-          </motion.button>
+          {/* CTA */}
+          <div className="mt-8">
+            <motion.button
+              whileTap={{ scale: 0.98 }}
+              disabled={loading}
+              type="submit"
+              className="w-full py-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl text-base shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-all disabled:opacity-70 flex justify-center items-center gap-2"
+            >
+              {loading && <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
+              {mode === "register" ? "Crear cuenta gratis" : "Iniciar sesión"}
+            </motion.button>
 
-          <p className="text-center text-xs text-[#4A4A5A] mt-4">
-            Al continuar aceptas nuestros{" "}
-            <span className="text-indigo-400 cursor-pointer hover:underline">Términos</span> y{" "}
-            <span className="text-indigo-400 cursor-pointer hover:underline">Política de Privacidad</span>
-          </p>
-        </div>
+            <p className="text-center text-xs text-[#4A4A5A] mt-4">
+              Al continuar aceptas nuestros{" "}
+              <span className="text-indigo-400 cursor-pointer hover:underline">Términos</span> y{" "}
+              <span className="text-indigo-400 cursor-pointer hover:underline">Política de Privacidad</span>
+            </p>
+          </div>
+        </form>
       </div>
     </motion.div>
   )
@@ -444,7 +489,7 @@ export default function OnboardingFlow({ onComplete }: { onComplete: () => void 
           total={steps.length}
         />
       ) : (
-        <AuthScreen key="auth" onBack={handleBack} />
+        <AuthScreen key="auth" onBack={handleBack} onComplete={onComplete} />
       )}
     </AnimatePresence>
   )
