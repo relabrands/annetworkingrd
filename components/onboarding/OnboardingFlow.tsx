@@ -28,6 +28,7 @@ const steps = [
     icon: Users,
     gradient: "from-indigo-500 to-purple-600",
     bgAccent: "bg-indigo-500/10",
+    image: "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&q=80",
     stats: [
       { label: "Miembros activos", value: "287+" },
       { label: "Sectores", value: "12" },
@@ -43,6 +44,7 @@ const steps = [
     icon: Sparkles,
     gradient: "from-emerald-500 to-teal-500",
     bgAccent: "bg-emerald-500/10",
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80",
     stats: [
       { label: "Precisión del match", value: "94%" },
       { label: "Tiempo promedio", value: "3 min" },
@@ -58,6 +60,7 @@ const steps = [
     icon: TrendingUp,
     gradient: "from-amber-500 to-orange-500",
     bgAccent: "bg-amber-500/10",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80",
     stats: [
       { label: "Deals cerrados", value: "$2.4M+" },
       { label: "Crecimiento promedio", value: "38%" },
@@ -112,17 +115,24 @@ function AuthScreen({ onBack, onComplete }: { onBack: () => void, onComplete: ()
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -60 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="min-h-screen bg-[#0A0A0F] flex flex-col"
+      className="min-h-[100dvh] bg-[#0A0A0F] flex flex-col relative overflow-hidden"
     >
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center opacity-30 z-0"
+        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80')" }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0F] via-[#0A0A0F]/90 to-transparent z-0" />
+
       {/* Grain overlay */}
-      <div className="fixed inset-0 pointer-events-none opacity-[0.03]"
+      <div className="absolute inset-0 pointer-events-none opacity-[0.03] z-0"
         style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")" }}
       />
 
       {/* Top gradient blob */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none z-0" />
 
-      <div className="flex-1 flex flex-col justify-between p-6 max-w-md mx-auto w-full pt-12">
+      <div className="flex-1 flex flex-col justify-center p-6 max-w-md mx-auto w-full relative z-10 py-12 overflow-y-auto">
         {/* Back button */}
         <button
           onClick={onBack}
@@ -298,11 +308,18 @@ function OnboardingStep({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -80 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="min-h-screen bg-[#0A0A0F] flex flex-col"
+      className="h-[100dvh] bg-[#0A0A0F] flex flex-col relative overflow-hidden"
     >
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center opacity-40 z-0 scale-105"
+        style={{ backgroundImage: `url('${step.image}')` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0F] via-[#0A0A0F]/80 to-[#0A0A0F]/20 z-0" />
+
       {/* Grain overlay */}
       <div
-        className="fixed inset-0 pointer-events-none opacity-[0.03]"
+        className="absolute inset-0 pointer-events-none opacity-[0.03] z-0"
         style={{
           backgroundImage:
             "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")",
@@ -311,7 +328,7 @@ function OnboardingStep({
 
       {/* Background gradient blob */}
       <div
-        className={`fixed top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gradient-to-br ${step.gradient} opacity-10 rounded-full blur-[140px] pointer-events-none`}
+        className={`absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gradient-to-br ${step.gradient} opacity-20 rounded-full blur-[140px] pointer-events-none z-0`}
       />
 
       {/* Header */}
