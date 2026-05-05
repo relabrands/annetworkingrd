@@ -149,7 +149,7 @@ function AuthScreen({ onBack, onComplete }: { onBack: () => void, onComplete: ()
           </div>
           <div>
             <h1 className="text-lg font-bold text-[#E2E8F0]" style={{ fontFamily: "var(--font-syne)" }}>NEXUS</h1>
-            <p className="text-xs text-[#94A3B8]">Dominican Business Network</p>
+            <p className="text-xs text-[#94A3B8]">Red de Negocios Dominicana</p>
           </div>
         </div>
 

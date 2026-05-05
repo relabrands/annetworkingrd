@@ -33,7 +33,7 @@ import {
 } from "lucide-react"
 
 // Types
-type MemberTier = "Member" | "Business" | "Investor"
+type MemberTier = "Miembro" | "Empresa" | "Inversor"
 type Sector = "Tecnología" | "Construcción" | "Salud" | "Finanzas" | "Retail" | "Consultoría"
 
 interface Member {
@@ -60,13 +60,13 @@ const members: Member[] = [
     role: "CEO & Fundadora",
     company: "TechRD Solutions",
     sector: "Tecnología",
-    tier: "Investor",
+    tier: "Inversor",
     avatar: "MR",
     offers: ["Inversión Serie A", "Mentoría Tech", "Red de contactos"],
     seeking: ["Startups fintech", "Equipos técnicos"],
     bio: "Inversora ángel con 15+ años en el sector tecnológico dominicano.",
     matchScore: 91,
-    matchReasons: ["Same sector", "Investor interest aligned", "Complementary network"],
+    matchReasons: ["Mismo sector", "Interés de inversión alineado", "Red complementaria"],
   },
   {
     id: "2",
@@ -74,13 +74,13 @@ const members: Member[] = [
     role: "Director de Operaciones",
     company: "Constructora Méndez",
     sector: "Construcción",
-    tier: "Business",
+    tier: "Empresa",
     avatar: "CM",
     offers: ["Desarrollo inmobiliario", "Joint ventures", "Terrenos comerciales"],
     seeking: ["Financiamiento", "Socios estratégicos"],
     bio: "Tercera generación en construcción, especializado en proyectos comerciales.",
     matchScore: 78,
-    matchReasons: ["Complementary services", "Growth potential"],
+    matchReasons: ["Servicios complementarios", "Potencial de crecimiento"],
   },
   {
     id: "3",
@@ -88,13 +88,13 @@ const members: Member[] = [
     role: "Directora Médica",
     company: "Centro Médico Integral",
     sector: "Salud",
-    tier: "Business",
+    tier: "Empresa",
     avatar: "AP",
     offers: ["Alianzas clínicas", "Tecnología médica"],
     seeking: ["Software de gestión", "Inversión en expansión"],
     bio: "Especialista en gestión hospitalaria con visión de transformación digital.",
     matchScore: 65,
-    matchReasons: ["Seeking technology solutions"],
+    matchReasons: ["Busca soluciones tecnológicas"],
   },
   {
     id: "4",
@@ -102,13 +102,13 @@ const members: Member[] = [
     role: "Managing Partner",
     company: "Capital Caribe",
     sector: "Finanzas",
-    tier: "Investor",
+    tier: "Inversor",
     avatar: "RS",
     offers: ["Capital de riesgo", "Due diligence", "Estructuración financiera"],
     seeking: ["Deals en tecnología", "Real estate comercial"],
     bio: "Ex-banquero de inversión, ahora enfocado en el ecosistema emprendedor local.",
     matchScore: 88,
-    matchReasons: ["Investor interest aligned", "Same investment thesis", "Active deal flow"],
+    matchReasons: ["Interés de inversión alineado", "Misma tesis de inversión", "Deal flow activo"],
   },
   {
     id: "5",
@@ -116,13 +116,13 @@ const members: Member[] = [
     role: "Fundadora",
     company: "Retail Dominicana",
     sector: "Retail",
-    tier: "Business",
+    tier: "Empresa",
     avatar: "GT",
     offers: ["Canales de distribución", "E-commerce expertise"],
     seeking: ["Productos innovadores", "Tech partners"],
     bio: "Pionera en e-commerce dominicano con red de 50+ tiendas físicas.",
     matchScore: 72,
-    matchReasons: ["Complementary channels", "Growth potential"],
+    matchReasons: ["Canales complementarios", "Potencial de crecimiento"],
   },
   {
     id: "6",
@@ -130,13 +130,13 @@ const members: Member[] = [
     role: "Consultor Senior",
     company: "Strategic Partners RD",
     sector: "Consultoría",
-    tier: "Member",
+    tier: "Miembro",
     avatar: "LG",
     offers: ["Estrategia corporativa", "M&A advisory"],
     seeking: ["Clientes corporativos", "Red de inversores"],
     bio: "Ex-McKinsey, especializado en estrategia para mercados emergentes.",
     matchScore: 83,
-    matchReasons: ["Professional services", "Network expansion"],
+    matchReasons: ["Servicios profesionales", "Expansión de red"],
   },
   {
     id: "7",
@@ -144,13 +144,13 @@ const members: Member[] = [
     role: "CTO",
     company: "FinTech Caribe",
     sector: "Tecnología",
-    tier: "Business",
+    tier: "Empresa",
     avatar: "PN",
     offers: ["Desarrollo fintech", "API banking", "Blockchain"],
     seeking: ["Inversión seed", "Alianzas bancarias"],
     bio: "Ingeniera de sistemas con expertise en pagos digitales y criptomonedas.",
     matchScore: 94,
-    matchReasons: ["Same sector", "Complementary technology", "High growth potential"],
+    matchReasons: ["Mismo sector", "Tecnología complementaria", "Alto potencial de crecimiento"],
   },
   {
     id: "8",
@@ -158,13 +158,13 @@ const members: Member[] = [
     role: "Presidente",
     company: "Grupo Inmobiliario Vega",
     sector: "Construcción",
-    tier: "Investor",
+    tier: "Inversor",
     avatar: "MV",
     offers: ["Co-inversión inmobiliaria", "Desarrollo de proyectos"],
     seeking: ["Proyectos turísticos", "Smart buildings"],
     bio: "Desarrollador inmobiliario con portfolio de $200M+ en propiedades.",
     matchScore: 69,
-    matchReasons: ["Real estate focus", "Capital availability"],
+    matchReasons: ["Enfoque inmobiliario", "Disponibilidad de capital"],
   },
   {
     id: "9",
@@ -172,13 +172,13 @@ const members: Member[] = [
     role: "Head of Growth",
     company: "HealthTech RD",
     sector: "Salud",
-    tier: "Member",
+    tier: "Miembro",
     avatar: "CF",
     offers: ["Marketing digital", "Growth hacking", "Patient acquisition"],
     seeking: ["Funding", "Healthcare partnerships"],
     bio: "Especialista en crecimiento para startups de salud digital.",
     matchScore: 76,
-    matchReasons: ["Healthcare expertise", "Growth focus"],
+    matchReasons: ["Experiencia en salud", "Enfoque en crecimiento"],
   },
   {
     id: "10",
@@ -186,13 +186,13 @@ const members: Member[] = [
     role: "CFO",
     company: "Inversiones del Caribe",
     sector: "Finanzas",
-    tier: "Business",
+    tier: "Empresa",
     avatar: "FC",
     offers: ["Estructuración fiscal", "Family office services"],
     seeking: ["Deal flow", "Co-inversores"],
     bio: "CPA con 20 años de experiencia en gestión de patrimonios familiares.",
     matchScore: 81,
-    matchReasons: ["Financial expertise", "Investment network"],
+    matchReasons: ["Experiencia financiera", "Red de inversión"],
   },
 ]
 
@@ -200,12 +200,12 @@ const members: Member[] = [
 const currentUser: Member = {
   id: "0",
   name: "Robinson",
-  role: "Entrepreneur",
+  role: "Emprendedor",
   company: "Nexus Ventures",
   sector: "Tecnología",
-  tier: "Business",
+  tier: "Empresa",
   avatar: "RV",
-  offers: ["Partnerships tecnológicos", "Product development"],
+  offers: ["Partnerships tecnológicos", "Desarrollo de producto"],
   seeking: ["Inversión Serie A", "Mentores de negocio"],
   bio: "Fundador de startups tech con pasión por conectar el ecosistema dominicano.",
 }
@@ -231,9 +231,9 @@ const sectorColors: Record<Sector, string> = {
 
 // Tier badge colors
 const tierColors: Record<MemberTier, string> = {
-  Member: "bg-slate-500/20 text-slate-400 border-slate-500/30",
-  Business: "bg-indigo-500/20 text-indigo-400 border-indigo-500/30",
-  Investor: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+  Miembro: "bg-slate-500/20 text-slate-400 border-slate-500/30",
+  Empresa: "bg-indigo-500/20 text-indigo-400 border-indigo-500/30",
+  Inversor: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
 }
 
 // Components
@@ -400,7 +400,7 @@ function MemberCard({
             <div className="text-2xl font-bold text-emerald-400">
               <AnimatedCounter value={member.matchScore} />%
             </div>
-            <p className="text-xs text-[#94A3B8]">match</p>
+            <p className="text-xs text-[#94A3B8]">afinidad</p>
           </div>
         )}
       </div>
@@ -421,7 +421,7 @@ function MemberCard({
               className="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
             >
               <Send className="w-4 h-4" />
-              Request Intro
+              Solicitar Intro
             </button>
           </motion.div>
         )}
@@ -498,7 +498,7 @@ function MatchCard({
               <div className="text-3xl font-bold text-emerald-400">
                 <AnimatedCounter value={member.matchScore || 0} />%
               </div>
-              <p className="text-xs text-[#94A3B8]">compatibility</p>
+              <p className="text-xs text-[#94A3B8]">compatibilidad</p>
             </div>
           </div>
 
@@ -515,7 +515,7 @@ function MatchCard({
           {/* Two columns comparison */}
           <div className="mt-3 sm:mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div className="bg-[#0A0A0F] rounded-lg p-3">
-              <p className="text-xs text-emerald-400 font-medium mb-2">What they offer</p>
+              <p className="text-xs text-emerald-400 font-medium mb-2">Lo que ofrecen</p>
               <ul className="space-y-1">
                 {member.offers.map((offer, i) => (
                   <li key={i} className="text-sm text-[#E2E8F0]">
@@ -525,7 +525,7 @@ function MatchCard({
               </ul>
             </div>
             <div className="bg-[#0A0A0F] rounded-lg p-3">
-              <p className="text-xs text-indigo-400 font-medium mb-2">What you need</p>
+              <p className="text-xs text-indigo-400 font-medium mb-2">Lo que buscas</p>
               <ul className="space-y-1">
                 {currentUser.seeking.map((need, i) => (
                   <li key={i} className="text-sm text-[#E2E8F0]">
@@ -556,7 +556,7 @@ function MatchCard({
             className="mt-3 sm:mt-4 w-full bg-indigo-500 hover:bg-indigo-600 text-white py-2.5 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
           >
             <Send className="w-4 h-4" />
-            Send Introduction
+            Enviar Introducción
           </button>
         </div>
       </div>
@@ -628,7 +628,7 @@ function MemberDetailModal({
           {member.matchScore && (
             <div className="mb-4 p-3 bg-[#0A0A0F] rounded-lg">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-[#94A3B8]">Match Score</span>
+                <span className="text-sm text-[#94A3B8]">Score de Afinidad</span>
                 <span className="text-lg font-bold text-emerald-400">{member.matchScore}%</span>
               </div>
               <div className="h-2 bg-[#1A1A24] rounded-full overflow-hidden">
@@ -656,13 +656,13 @@ function MemberDetailModal({
 
           {/* Bio */}
           <div className="mb-4">
-            <h3 className="text-sm font-medium text-[#94A3B8] mb-2">About</h3>
+            <h3 className="text-sm font-medium text-[#94A3B8] mb-2">Acerca de</h3>
             <p className="text-[#E2E8F0] text-sm leading-relaxed">{member.bio}</p>
           </div>
 
           {/* What they offer */}
           <div className="mb-4">
-            <h3 className="text-sm font-medium text-emerald-400 mb-2">What they offer</h3>
+            <h3 className="text-sm font-medium text-emerald-400 mb-2">Lo que ofrecen</h3>
             <div className="flex flex-wrap gap-2">
               {member.offers.map((offer, i) => (
                 <span
@@ -677,7 +677,7 @@ function MemberDetailModal({
 
           {/* What they seek */}
           <div className="mb-6">
-            <h3 className="text-sm font-medium text-indigo-400 mb-2">What they are looking for</h3>
+            <h3 className="text-sm font-medium text-indigo-400 mb-2">Lo que están buscando</h3>
             <div className="flex flex-wrap gap-2">
               {member.seeking.map((item, i) => (
                 <span
@@ -696,7 +696,7 @@ function MemberDetailModal({
               onClick={onClose}
               className="flex-1 px-4 py-2.5 border border-[#2A2A3A] text-[#94A3B8] hover:text-[#E2E8F0] hover:border-[#3A3A4A] rounded-lg text-sm font-medium transition-colors"
             >
-              Close
+              Cerrar
             </button>
             <button
               onClick={() => {
@@ -706,7 +706,7 @@ function MemberDetailModal({
               className="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white py-2.5 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
             >
               <Send className="w-4 h-4" />
-              Request Intro
+              Solicitar Intro
             </button>
           </div>
         </div>
@@ -758,7 +758,7 @@ function IntroModal({
               {member.avatar}
             </div>
             <div>
-              <h3 className="font-semibold text-[#E2E8F0]">Send intro to {member.name}</h3>
+              <h3 className="font-semibold text-[#E2E8F0]">Enviar intro a {member.name}</h3>
               <p className="text-xs text-[#94A3B8]">{member.role} @ {member.company}</p>
             </div>
           </div>
@@ -773,7 +773,7 @@ function IntroModal({
         <div className="p-4">
           <div className="flex items-center gap-2 mb-3">
             <Sparkles className="w-4 h-4 text-indigo-400" />
-            <span className="text-xs text-indigo-400 font-medium">AI-generated introduction</span>
+            <span className="text-xs text-indigo-400 font-medium">Introducción generada por IA</span>
           </div>
           <div className={`relative ${isGenerating ? "shimmer-border" : ""} rounded-lg`}>
             {isGenerating ? (
@@ -799,7 +799,7 @@ function IntroModal({
             onClick={onClose}
             className="px-4 py-2 text-sm text-[#94A3B8] hover:text-[#E2E8F0] transition-colors"
           >
-            Cancel
+            Cancelar
           </button>
           <button
             onClick={onSend}
@@ -807,7 +807,7 @@ function IntroModal({
             className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2"
           >
             <Send className="w-4 h-4" />
-            Send Introduction
+            Enviar Introducción
           </button>
         </div>
       </motion.div>
@@ -825,13 +825,13 @@ function Dashboard({ onRequestIntro, onViewDetail }: { onRequestIntro: (member: 
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <h1 className="text-2xl font-bold text-[#E2E8F0]" style={{ fontFamily: "var(--font-syne)" }}>
-            Good morning, Robinson
+            Buenos días, Robinson
           </h1>
-          <p className="text-[#94A3B8] mt-1">Here&apos;s what&apos;s happening in your network</p>
+          <p className="text-[#94A3B8] mt-1">Esto es lo que está pasando en tu red</p>
         </div>
-        <span className={`px-3 py-1.5 rounded-full border text-sm font-medium ${tierColors["Business"]}`}>
+        <span className={`px-3 py-1.5 rounded-full border text-sm font-medium ${tierColors["Empresa"]}`}>
           <Briefcase className="w-4 h-4 inline mr-1.5" />
-          Business
+          Empresa
         </span>
       </div>
 
@@ -842,7 +842,7 @@ function Dashboard({ onRequestIntro, onViewDetail }: { onRequestIntro: (member: 
           <div className="bg-[#111118] border border-[#2A2A3A] rounded-xl p-6">
             <div className="flex items-center gap-2 mb-4">
               <Sparkles className="w-5 h-5 text-emerald-400" />
-              <h2 className="text-lg font-semibold text-[#E2E8F0]">Your Matches Today</h2>
+              <h2 className="text-lg font-semibold text-[#E2E8F0]">Tus Conexiones de Hoy</h2>
             </div>
             <div className="grid sm:grid-cols-3 gap-4">
               {topMatches.map((member) => (
@@ -900,7 +900,7 @@ function Dashboard({ onRequestIntro, onViewDetail }: { onRequestIntro: (member: 
             <div className="bg-[#111118] border border-[#2A2A3A] rounded-lg p-4">
               <div className="flex items-center gap-2 text-[#94A3B8] mb-2">
                 <Eye className="w-4 h-4" />
-                <span className="text-xs">Profile Views</span>
+                <span className="text-xs">Vistas de Perfil</span>
               </div>
               <div className="text-2xl font-bold text-indigo-400">
                 <AnimatedCounter value={18} duration={1200} />
@@ -911,7 +911,7 @@ function Dashboard({ onRequestIntro, onViewDetail }: { onRequestIntro: (member: 
 
         {/* Activity Feed */}
         <div className="bg-[#111118] border border-[#2A2A3A] rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-[#E2E8F0] mb-4">Activity Feed</h2>
+          <h2 className="text-lg font-semibold text-[#E2E8F0] mb-4">Actividad Reciente</h2>
           <div className="space-y-4">
             {activityFeed.map((activity, i) => (
               <motion.div
@@ -967,9 +967,9 @@ function Discover({ onRequestIntro, onViewDetail }: { onRequestIntro: (member: M
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-[#E2E8F0]" style={{ fontFamily: "var(--font-syne)" }}>
-          Discover Members
+          Descubrir Miembros
         </h1>
-        <p className="text-[#94A3B8] mt-1">Find your next business connection</p>
+        <p className="text-[#94A3B8] mt-1">Encuentra tu próxima conexión de negocios</p>
       </div>
 
       {/* Filters */}
@@ -978,7 +978,7 @@ function Discover({ onRequestIntro, onViewDetail }: { onRequestIntro: (member: M
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94A3B8]" />
           <input
             type="text"
-            placeholder="Search members..."
+            placeholder="Buscar miembros..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 bg-[#0A0A0F] border border-[#2A2A3A] rounded-lg text-sm text-[#E2E8F0] placeholder-[#94A3B8] focus:outline-none focus:border-indigo-500/50 transition-colors"
@@ -991,7 +991,7 @@ function Discover({ onRequestIntro, onViewDetail }: { onRequestIntro: (member: M
             onChange={(e) => setSectorFilter(e.target.value as Sector | "All")}
             className="flex-1 sm:flex-none bg-[#0A0A0F] border border-[#2A2A3A] rounded-lg px-3 py-2 text-sm text-[#E2E8F0] focus:outline-none focus:border-indigo-500/50 transition-colors"
           >
-            <option value="All">All Sectors</option>
+            <option value="All">Todos los Sectores</option>
             {Object.keys(sectorColors).map((sector) => (
               <option key={sector} value={sector}>
                 {sector}
@@ -1003,7 +1003,7 @@ function Discover({ onRequestIntro, onViewDetail }: { onRequestIntro: (member: M
             onChange={(e) => setTierFilter(e.target.value as MemberTier | "All")}
             className="flex-1 sm:flex-none bg-[#0A0A0F] border border-[#2A2A3A] rounded-lg px-3 py-2 text-sm text-[#E2E8F0] focus:outline-none focus:border-indigo-500/50 transition-colors"
           >
-            <option value="All">All Tiers</option>
+            <option value="All">Todos los Niveles</option>
             {Object.keys(tierColors).map((tier) => (
               <option key={tier} value={tier}>
                 {tier}
@@ -1022,7 +1022,7 @@ function Discover({ onRequestIntro, onViewDetail }: { onRequestIntro: (member: M
 
       {filteredMembers.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-[#94A3B8]">No members found matching your filters.</p>
+          <p className="text-[#94A3B8]">No se encontraron miembros con esos filtros.</p>
         </div>
       )}
     </div>
@@ -1038,9 +1038,9 @@ function MyMatches({ onSendIntro, onViewDetail }: { onSendIntro: (member: Member
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-[#E2E8F0]" style={{ fontFamily: "var(--font-syne)" }}>
-          Your AI Matches
+          Tus Conexiones IA
         </h1>
-        <p className="text-[#94A3B8] mt-1">Curated connections based on your profile and goals</p>
+        <p className="text-[#94A3B8] mt-1">Conexiones seleccionadas basadas en tu perfil y objetivos</p>
       </div>
 
       <div className="space-y-4">
@@ -1060,15 +1060,15 @@ function Profile({ onShowToast }: { onShowToast: (message: string) => void }) {
     <div className="space-y-6 max-w-2xl">
       <div>
         <h1 className="text-2xl font-bold text-[#E2E8F0]" style={{ fontFamily: "var(--font-syne)" }}>
-          Your Profile
+          Tu Perfil
         </h1>
-        <p className="text-[#94A3B8] mt-1">Manage your professional presence</p>
+        <p className="text-[#94A3B8] mt-1">Gestiona tu presencia profesional</p>
       </div>
 
       {/* Profile Strength */}
       <div className="bg-[#111118] border border-[#2A2A3A] rounded-xl p-6">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-sm text-[#94A3B8]">Profile Strength</span>
+          <span className="text-sm text-[#94A3B8]">Fuerza del Perfil</span>
           <span className="text-sm font-semibold text-indigo-400">{profileStrength}%</span>
         </div>
         <div className="h-2 bg-[#1A1A24] rounded-full overflow-hidden">
@@ -1079,7 +1079,7 @@ function Profile({ onShowToast }: { onShowToast: (message: string) => void }) {
             className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"
           />
         </div>
-        <p className="text-xs text-[#94A3B8] mt-2">Add your WhatsApp to reach 85%</p>
+        <p className="text-xs text-[#94A3B8] mt-2">Añade tu WhatsApp para alcanzar el 85%</p>
       </div>
 
       {/* Avatar Upload */}
@@ -1104,7 +1104,7 @@ function Profile({ onShowToast }: { onShowToast: (message: string) => void }) {
       <div className="bg-[#111118] border border-[#2A2A3A] rounded-xl p-6 space-y-4">
         <div className="grid sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm text-[#94A3B8] mb-2">Name</label>
+            <label className="block text-sm text-[#94A3B8] mb-2">Nombre</label>
             <input
               type="text"
               defaultValue={currentUser.name}
@@ -1112,7 +1112,7 @@ function Profile({ onShowToast }: { onShowToast: (message: string) => void }) {
             />
           </div>
           <div>
-            <label className="block text-sm text-[#94A3B8] mb-2">Role</label>
+            <label className="block text-sm text-[#94A3B8] mb-2">Rol</label>
             <input
               type="text"
               defaultValue={currentUser.role}
@@ -1122,7 +1122,7 @@ function Profile({ onShowToast }: { onShowToast: (message: string) => void }) {
         </div>
 
         <div>
-          <label className="block text-sm text-[#94A3B8] mb-2">Company</label>
+          <label className="block text-sm text-[#94A3B8] mb-2">Empresa</label>
           <input
             type="text"
             defaultValue={currentUser.company}
@@ -1145,7 +1145,7 @@ function Profile({ onShowToast }: { onShowToast: (message: string) => void }) {
         </div>
 
         <div>
-          <label className="block text-sm text-[#94A3B8] mb-2">What I Offer</label>
+          <label className="block text-sm text-[#94A3B8] mb-2">Lo que Ofrezco</label>
           <div className="flex flex-wrap gap-2">
             {currentUser.offers.map((offer, i) => (
               <span
@@ -1163,7 +1163,7 @@ function Profile({ onShowToast }: { onShowToast: (message: string) => void }) {
         </div>
 
         <div>
-          <label className="block text-sm text-[#94A3B8] mb-2">What I&apos;m Looking For</label>
+          <label className="block text-sm text-[#94A3B8] mb-2">Lo que Busco</label>
           <div className="flex flex-wrap gap-2">
             {currentUser.seeking.map((item, i) => (
               <span
@@ -1181,7 +1181,7 @@ function Profile({ onShowToast }: { onShowToast: (message: string) => void }) {
         </div>
 
         <div>
-          <label className="block text-sm text-[#94A3B8] mb-2">Bio</label>
+          <label className="block text-sm text-[#94A3B8] mb-2">Biografía</label>
           <textarea
             rows={3}
             defaultValue={currentUser.bio}
@@ -1190,7 +1190,7 @@ function Profile({ onShowToast }: { onShowToast: (message: string) => void }) {
         </div>
 
         <div>
-          <label className="block text-sm text-[#94A3B8] mb-2">WhatsApp (optional)</label>
+          <label className="block text-sm text-[#94A3B8] mb-2">WhatsApp (opcional)</label>
           <input
             type="tel"
             placeholder="+1 809 XXX XXXX"
@@ -1201,11 +1201,11 @@ function Profile({ onShowToast }: { onShowToast: (message: string) => void }) {
 
       {/* Tier Selection */}
       <div className="bg-[#111118] border border-[#2A2A3A] rounded-xl p-6">
-        <h3 className="font-semibold text-[#E2E8F0] mb-4">Membership Tier</h3>
+        <h3 className="font-semibold text-[#E2E8F0] mb-4">Nivel de Membresía</h3>
         <div className="grid grid-cols-3 gap-3">
-          {(["Member", "Business", "Investor"] as MemberTier[]).map((tier) => {
+          {(["Miembro", "Empresa", "Inversor"] as MemberTier[]).map((tier) => {
             const isActive = currentUser.tier === tier
-            const isLocked = tier === "Investor" && currentUser.tier !== "Investor"
+            const isLocked = tier === "Inversor" && currentUser.tier !== "Inversor"
             return (
               <button
                 key={tier}
@@ -1225,9 +1225,9 @@ function Profile({ onShowToast }: { onShowToast: (message: string) => void }) {
                   {tier}
                 </div>
                 <div className="text-xs text-[#94A3B8] mt-1">
-                  {tier === "Member" && "Free access"}
-                  {tier === "Business" && "$99/mo"}
-                  {tier === "Investor" && "$299/mo"}
+                  {tier === "Miembro" && "Acceso gratuito"}
+                  {tier === "Empresa" && "$99/mes"}
+                  {tier === "Inversor" && "$299/mes"}
                 </div>
               </button>
             )
@@ -1238,17 +1238,17 @@ function Profile({ onShowToast }: { onShowToast: (message: string) => void }) {
       {/* Settings (Mobile only) */}
       <div className="md:hidden bg-[#111118] border border-[#2A2A3A] rounded-xl p-6 flex flex-row items-center justify-between">
         <div>
-          <h3 className="font-semibold text-[#E2E8F0]">Theme</h3>
-          <p className="text-xs text-[#94A3B8]">Choose your preferred theme</p>
+          <h3 className="font-semibold text-[#E2E8F0]">Tema</h3>
+          <p className="text-xs text-[#94A3B8]">Elige tu tema preferido</p>
         </div>
         <ThemeToggle />
       </div>
 
       <button
-        onClick={() => onShowToast("Profile updated!")}
+        onClick={() => onShowToast("¡Perfil actualizado!")}
         className="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-3 rounded-lg font-medium transition-colors"
       >
-        Save Changes
+        Guardar Cambios
       </button>
     </div>
   )
@@ -1293,14 +1293,14 @@ export default function NexusApp() {
 
   const handleSendIntro = () => {
     setIntroModal(null)
-    showToast("Intro sent!")
+    showToast("¡Intro enviada!")
   }
 
   const navItems = [
-    { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { id: "discover", label: "Discover", icon: Compass },
-    { id: "matches", label: "My Matches", icon: Sparkles },
-    { id: "profile", label: "Profile", icon: User },
+    { id: "dashboard", label: "Panel", icon: LayoutDashboard },
+    { id: "discover", label: "Descubrir", icon: Compass },
+    { id: "matches", label: "Mis Conexiones", icon: Sparkles },
+    { id: "profile", label: "Perfil", icon: User },
   ] as const
 
   return (
@@ -1314,7 +1314,7 @@ export default function NexusApp() {
   <h1 className="text-2xl font-bold text-foreground tracking-tight" style={{ fontFamily: "var(--font-syne)" }}>
   NEXUS
   </h1>
-  <p className="text-xs text-muted-foreground mt-1">Dominican Business Network</p>
+  <p className="text-xs text-muted-foreground mt-1">Red de Negocios Dominicana</p>
   </div>
   
   <nav className="flex-1 px-3">
