@@ -30,6 +30,7 @@ import {
   Sun,
   Moon,
   Monitor,
+  LogOut,
 } from "lucide-react"
 
 // Types
@@ -1296,6 +1297,18 @@ export default function NexusApp() {
     showToast("¡Intro enviada!")
   }
 
+  const handleLogout = async () => {
+    try {
+      const { auth } = await import("@/lib/firebase")
+      const { signOut } = await import("firebase/auth")
+      await signOut(auth)
+    } catch (e) {
+      console.error(e)
+    }
+    localStorage.removeItem("nexus_onboarding_done")
+    setOnboardingDone(false)
+  }
+
   const navItems = [
     { id: "dashboard", label: "Panel", icon: LayoutDashboard },
     { id: "discover", label: "Descubrir", icon: Compass },
@@ -1304,7 +1317,7 @@ export default function NexusApp() {
   ] as const
 
   return (
-  <div className="min-h-screen bg-background flex">
+  <div className="h-[100dvh] overflow-hidden bg-background flex">
   {/* Grain overlay */}
   <div className="grain-overlay" />
   
@@ -1317,7 +1330,7 @@ export default function NexusApp() {
   <p className="text-xs text-muted-foreground mt-1">Red de Negocios Dominicana</p>
   </div>
   
-  <nav className="flex-1 px-3">
+  <nav className="flex-1 px-3 overflow-y-auto">
   {navItems.map((item) => {
   const Icon = item.icon
   const isActive = activeTab === item.id
@@ -1340,21 +1353,33 @@ export default function NexusApp() {
         </nav>
 
   {/* User section */}
-  <div className="p-4 border-t border-border">
+  <div className="p-4 border-t border-border mt-auto">
   <div className="flex items-center gap-3 mb-4">
-  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-semibold text-sm">
+  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-semibold text-sm shrink-0">
   {currentUser.avatar}
   </div>
   <div className="flex-1 min-w-0">
   <p className="text-sm font-medium text-foreground truncate">{currentUser.name}</p>
   <p className="text-xs text-muted-foreground truncate">{currentUser.company}</p>
   </div>
-  <button className="text-muted-foreground hover:text-foreground transition-colors">
+  <button className="text-muted-foreground hover:text-foreground transition-colors shrink-0">
   <Settings className="w-5 h-5" />
   </button>
   </div>
-  {/* Theme toggle */}
-  <ThemeToggle />
+  
+  {/* Theme & Logout */}
+  <div className="flex items-center gap-2">
+    <div className="flex-1">
+      <ThemeToggle />
+    </div>
+    <button 
+      onClick={handleLogout}
+      className="p-2 text-muted-foreground hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors shrink-0"
+      title="Cerrar sesión"
+    >
+      <LogOut className="w-5 h-5" />
+    </button>
+  </div>
   </div>
   </aside>
 
