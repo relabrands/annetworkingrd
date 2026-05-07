@@ -1,0 +1,12 @@
+{"users": [
+{
+  "localId": "rtZYRUF0EGQm6u4DBNdyFs2PQPo1",
+  "email": "robinsonantsanchez@gmail.com",
+  "emailVerified": false,
+  "passwordHash": "tRp4FY4V+QtM/2BzTUcC3Yf/+NTGGMwmjxpED/2mB8KiwIoZz3Mq6uINf2OmKD4mi9NCK2wopy/XtkJEegPJ/Q==",
+  "salt": "RuggnR/FOoYvWA==",
+  "displayName": "Robinson ",
+  "lastSignedInAt": "1777996575776",
+  "createdAt": "1777932381140",
+  "providerUserInfo": []
+}]}

@@ -2,20 +2,8 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { auth } from "@/lib/firebase"
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
-import {
-  Sparkles,
-  Users,
-  TrendingUp,
-  ChevronRight,
-  Mail,
-  Lock,
-  Eye,
-  EyeOff,
-  ArrowLeft,
-  Handshake,
-} from "lucide-react"
+import { Sparkles, Users, TrendingUp, ChevronRight, Handshake } from "lucide-react"
+import RegistrationWizard from "@/components/onboarding/RegistrationWizard"
 
 // ─── Onboarding Steps Data ───────────────────────────────────────────────────
 const steps = [
@@ -69,221 +57,8 @@ const steps = [
   },
 ]
 
-// ─── Auth Screen ─────────────────────────────────────────────────────────────
-function AuthScreen({ onBack, onComplete }: { onBack: () => void, onComplete: () => void }) {
-  const [mode, setMode] = useState<"login" | "register">("register")
-  const [showPass, setShowPass] = useState(false)
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [name, setName] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
-    setLoading(true)
-
-    try {
-      if (mode === "register") {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-        if (name) {
-          await updateProfile(userCredential.user, { displayName: name })
-        }
-      } else {
-        await signInWithEmailAndPassword(auth, email, password)
-      }
-      onComplete()
-    } catch (err: any) {
-      console.error(err)
-      if (err.code === "auth/email-already-in-use") {
-        setError("Este correo ya está en uso.")
-      } else if (err.code === "auth/invalid-credential" || err.code === "auth/wrong-password") {
-        setError("Credenciales incorrectas.")
-      } else {
-        setError("Ocurrió un error. Inténtalo de nuevo.")
-      }
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  return (
-    <motion.div
-      key="auth"
-      initial={{ opacity: 0, x: 60 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -60 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-      className="min-h-[100dvh] bg-[#0A0A0F] flex flex-col relative overflow-hidden"
-    >
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center opacity-30 z-0"
-        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80')" }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0F] via-[#0A0A0F]/90 to-transparent z-0" />
-
-      {/* Grain overlay */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03] z-0"
-        style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")" }}
-      />
-
-      {/* Top gradient blob */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none z-0" />
-
-      <div className="flex-1 flex flex-col justify-center p-6 max-w-md mx-auto w-full relative z-10 py-12 overflow-y-auto">
-        {/* Back button */}
-        <button
-          onClick={onBack}
-          className="flex items-center gap-2 text-[#94A3B8] hover:text-[#E2E8F0] transition-colors mb-8 w-fit"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span className="text-sm">Volver</span>
-        </button>
-
-        {/* Logo */}
-        <div className="flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-            <Handshake className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <h1 className="text-lg font-bold text-[#E2E8F0]" style={{ fontFamily: "var(--font-syne)" }}>NEXUS</h1>
-            <p className="text-xs text-[#94A3B8]">Red de Negocios Dominicana</p>
-          </div>
-        </div>
-
-        {/* Header */}
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-[#E2E8F0] leading-tight" style={{ fontFamily: "var(--font-syne)" }}>
-            {mode === "register" ? "Crea tu cuenta" : "Bienvenido de vuelta"}
-          </h2>
-          <p className="text-[#94A3B8] mt-2">
-            {mode === "register"
-              ? "Únete a la red empresarial más exclusiva de RD"
-              : "Inicia sesión para continuar"}
-          </p>
-        </div>
-
-        {/* Tab switcher */}
-        <div className="flex p-1 bg-[#111118] border border-[#2A2A3A] rounded-xl mb-6">
-          {(["register", "login"] as const).map((m) => (
-            <button
-              key={m}
-              onClick={() => setMode(m)}
-              className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                mode === m
-                  ? "bg-indigo-500 text-white shadow"
-                  : "text-[#94A3B8] hover:text-[#E2E8F0]"
-              }`}
-            >
-              {m === "register" ? "Registrarse" : "Iniciar Sesión"}
-            </button>
-          ))}
-        </div>
-
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">
-              {error}
-            </div>
-          )}
-
-          <AnimatePresence mode="wait">
-            {mode === "register" && (
-              <motion.div
-                key="name-field"
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <label className="block text-sm text-[#94A3B8] mb-2">Nombre completo</label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Robinson Sánchez"
-                    className="w-full px-4 py-3 bg-[#111118] border border-[#2A2A3A] rounded-xl text-[#E2E8F0] placeholder-[#4A4A5A] focus:outline-none focus:border-indigo-500/60 transition-colors text-sm"
-                  />
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <div>
-            <label className="block text-sm text-[#94A3B8] mb-2">Correo electrónico</label>
-            <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4A4A5A]" />
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="tu@empresa.com"
-                className="w-full pl-11 pr-4 py-3 bg-[#111118] border border-[#2A2A3A] rounded-xl text-[#E2E8F0] placeholder-[#4A4A5A] focus:outline-none focus:border-indigo-500/60 transition-colors text-sm"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm text-[#94A3B8] mb-2">Contraseña</label>
-            <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4A4A5A]" />
-              <input
-                type={showPass ? "text" : "password"}
-                required
-                minLength={6}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full pl-11 pr-12 py-3 bg-[#111118] border border-[#2A2A3A] rounded-xl text-[#E2E8F0] placeholder-[#4A4A5A] focus:outline-none focus:border-indigo-500/60 transition-colors text-sm"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPass(!showPass)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4A4A5A] hover:text-[#94A3B8] transition-colors"
-              >
-                {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
-            </div>
-          </div>
-
-          {mode === "login" && (
-            <div className="text-right">
-              <button type="button" className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">
-                ¿Olvidaste tu contraseña?
-              </button>
-            </div>
-          )}
-
-          {/* CTA */}
-          <div className="mt-8">
-            <motion.button
-              whileTap={{ scale: 0.98 }}
-              disabled={loading}
-              type="submit"
-              className="w-full py-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl text-base shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-all disabled:opacity-70 flex justify-center items-center gap-2"
-            >
-              {loading && <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
-              {mode === "register" ? "Crear cuenta gratis" : "Iniciar sesión"}
-            </motion.button>
-
-            <p className="text-center text-xs text-[#4A4A5A] mt-4">
-              Al continuar aceptas nuestros{" "}
-              <span className="text-indigo-400 cursor-pointer hover:underline">Términos</span> y{" "}
-              <span className="text-indigo-400 cursor-pointer hover:underline">Política de Privacidad</span>
-            </p>
-          </div>
-        </form>
-      </div>
-    </motion.div>
-  )
-}
-
 // ─── Single Onboarding Step ───────────────────────────────────────────────────
+
 function OnboardingStep({
   step,
   isLast,
@@ -490,7 +265,7 @@ export default function OnboardingFlow({ onComplete }: { onComplete: () => void 
           total={steps.length}
         />
       ) : (
-        <AuthScreen key="auth" onBack={handleBack} onComplete={onComplete} />
+        <RegistrationWizard key="auth" onBack={handleBack} onComplete={onComplete} />
       )}
     </AnimatePresence>
   )
