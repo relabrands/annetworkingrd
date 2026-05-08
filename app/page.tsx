@@ -1,9 +1,12 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, createContext, useContext } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTheme } from "next-themes"
 import OnboardingFlow from "@/components/onboarding/OnboardingFlow"
+import { auth, db } from "@/lib/firebase"
+import { onAuthStateChanged } from "firebase/auth"
+import { doc, getDoc, updateDoc, onSnapshot } from "firebase/firestore"
 import {
   LayoutDashboard,
   Compass,
@@ -197,19 +200,8 @@ const members: Member[] = [
   },
 ]
 
-// Current user
-const currentUser: Member = {
-  id: "0",
-  name: "Robinson",
-  role: "Emprendedor",
-  company: "Nexus Ventures",
-  sector: "Tecnología",
-  tier: "Empresa",
-  avatar: "RV",
-  offers: ["Partnerships tecnológicos", "Desarrollo de producto"],
-  seeking: ["Inversión Serie A", "Mentores de negocio"],
-  bio: "Fundador de startups tech con pasión por conectar el ecosistema dominicano.",
-}
+// Current User Context
+export const CurrentUserContext = createContext<Member | null>(null)
 
 // Activity feed data
 const activityFeed = [
@@ -441,6 +433,7 @@ function MatchCard({
   onSendIntro: (member: Member) => void
   onViewDetail: (member: Member) => void
 }) {
+  const currentUser = useContext(CurrentUserContext) as Member;
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
@@ -726,6 +719,7 @@ function IntroModal({
   onClose: () => void
   onSend: () => void
 }) {
+  const currentUser = useContext(CurrentUserContext) as Member;
   const [isGenerating, setIsGenerating] = useState(true)
   const [message, setMessage] = useState("")
 
@@ -1055,6 +1049,7 @@ function MyMatches({ onSendIntro, onViewDetail }: { onSendIntro: (member: Member
 }
 
 function Profile({ onShowToast }: { onShowToast: (message: string) => void }) {
+  const currentUser = useContext(CurrentUserContext) as Member;
   const [profileStrength] = useState(72)
   const sectors: Sector[] = ["Tecnología", "Construcción", "Salud", "Finanzas", "Retail", "Consultoría", "Marketing"]
 
@@ -1256,6 +1251,107 @@ function Profile({ onShowToast }: { onShowToast: (message: string) => void }) {
   )
 }
 
+function CompletionModal({ currentUser, onClose }: { currentUser: Member; onClose: () => void }) {
+  const [offers, setOffers] = useState<string[]>(currentUser.offers || [])
+  const [seeking, setSeeking] = useState<string[]>(currentUser.seeking || [])
+  const [isSaving, setIsSaving] = useState(false)
+
+  const PREDEFINED_OFFERS = [
+    "Capital Semilla", "Mentoría Estratégica", "Red de Inversionistas", 
+    "Desarrollo de Producto", "Marketing", "Partnerships", "Talento Técnico"
+  ]
+  const PREDEFINED_SEEKING = [
+    "Inversión Serie A", "Startups B2B SaaS", "Mentores de negocio",
+    "Talento Técnico", "Asesoría Legal", "Socios Comerciales", "Clientes B2B"
+  ]
+
+  const toggleArray = (array: string[], setArray: (val: string[]) => void, item: string) => {
+    if (array.includes(item)) setArray(array.filter((i) => i !== item))
+    else setArray([...array, item])
+  }
+
+  const handleSave = async () => {
+    if (offers.length === 0 || seeking.length === 0) {
+      alert("Por favor selecciona al menos una opción en ambos campos.")
+      return
+    }
+    setIsSaving(true)
+    try {
+      await updateDoc(doc(db, "users", currentUser.id), {
+        "profile.offers": offers,
+        "profile.needs": seeking,
+      })
+      onClose()
+    } catch (e) {
+      console.error(e)
+      alert("Error al guardar.")
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+      <div className="bg-[#111118] border border-[#2A2A3A] rounded-xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl">
+        <h2 className="text-xl font-bold text-white mb-2" style={{ fontFamily: "var(--font-syne)" }}>
+          Completa tu perfil
+        </h2>
+        <p className="text-[#94A3B8] mb-6 text-sm">
+          Para brindarte las mejores conexiones, necesitamos saber qué ofreces y qué estás buscando en Nexus.
+        </p>
+
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-sm font-medium text-emerald-400 mb-3">Lo que ofrezco</h3>
+            <div className="flex flex-wrap gap-2">
+              {PREDEFINED_OFFERS.map(item => (
+                <button
+                  key={item}
+                  onClick={() => toggleArray(offers, setOffers, item)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+                    offers.includes(item)
+                      ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/50"
+                      : "bg-[#1A1A24] text-[#94A3B8] border-[#2A2A3A] hover:bg-[#2A2A3A]"
+                  }`}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-medium text-indigo-400 mb-3">Lo que busco</h3>
+            <div className="flex flex-wrap gap-2">
+              {PREDEFINED_SEEKING.map(item => (
+                <button
+                  key={item}
+                  onClick={() => toggleArray(seeking, setSeeking, item)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+                    seeking.includes(item)
+                      ? "bg-indigo-500/20 text-indigo-400 border-indigo-500/50"
+                      : "bg-[#1A1A24] text-[#94A3B8] border-[#2A2A3A] hover:bg-[#2A2A3A]"
+                  }`}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <button
+            onClick={handleSave}
+            disabled={isSaving || offers.length === 0 || seeking.length === 0}
+            className="w-full mt-4 bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed text-white py-3 rounded-lg font-medium transition-colors"
+          >
+            {isSaving ? "Guardando..." : "Guardar y Continuar"}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // Main App
 export default function NexusApp() {
   const [onboardingDone, setOnboardingDone] = useState<boolean | null>(null)
@@ -1263,9 +1359,52 @@ export default function NexusApp() {
   const [toast, setToast] = useState<string | null>(null)
   const [introModal, setIntroModal] = useState<Member | null>(null)
 
+  const [currentUser, setCurrentUser] = useState<Member | null>(null)
+  const [isLoadingAuth, setIsLoadingAuth] = useState(true)
+  const [showCompletionModal, setShowCompletionModal] = useState(false)
+
   useEffect(() => {
     const done = localStorage.getItem("nexus_onboarding_done")
     setOnboardingDone(!!done)
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const unsubscribeDoc = onSnapshot(doc(db, "users", user.uid), (docSnap) => {
+          if (docSnap.exists()) {
+            const data = docSnap.data()
+            const offers = data.profile?.offers || []
+            const seeking = data.profile?.needs || data.profile?.seeking || []
+            
+            const memberData: Member = {
+              id: user.uid,
+              name: data.name || "",
+              role: data.role === "investor" ? "Inversor" : data.role === "entrepreneur" ? "Emprendedor" : data.role === "professional" ? "Profesional" : data.role === "student" ? "Estudiante" : data.role,
+              company: data.company || "",
+              sector: data.sector || "Tecnología",
+              tier: data.tier || "Miembro",
+              avatar: data.name ? data.name.substring(0, 2).toUpperCase() : "NX",
+              offers: offers,
+              seeking: seeking,
+              bio: data.profile?.bio || "",
+            }
+            
+            setCurrentUser(memberData)
+            
+            if (offers.length === 0 || seeking.length === 0) {
+              setShowCompletionModal(true)
+            } else {
+              setShowCompletionModal(false)
+            }
+          }
+          setIsLoadingAuth(false)
+        })
+        return () => unsubscribeDoc()
+      } else {
+        setCurrentUser(null)
+        setIsLoadingAuth(false)
+      }
+    })
+    return () => unsubscribe()
   }, [])
 
   const handleOnboardingComplete = () => {
@@ -1276,7 +1415,13 @@ export default function NexusApp() {
   // Show nothing until we know if onboarding was done
   const [detailModal, setDetailModal] = useState<Member | null>(null)
 
-  if (onboardingDone === null) return null
+  if (onboardingDone === null || isLoadingAuth) {
+    return (
+      <div className="min-h-screen bg-[#0A0A0F] flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin"></div>
+      </div>
+    )
+  }
 
   // Show onboarding if not done
   if (!onboardingDone) {
@@ -1318,6 +1463,10 @@ export default function NexusApp() {
   ] as const
 
   return (
+    <CurrentUserContext.Provider value={currentUser}>
+      {showCompletionModal && currentUser && (
+        <CompletionModal currentUser={currentUser} onClose={() => setShowCompletionModal(false)} />
+      )}
   <div className="h-[100dvh] overflow-hidden bg-background flex">
   {/* Grain overlay */}
   <div className="grain-overlay" />
@@ -1470,5 +1619,6 @@ isActive ? "text-indigo-400" : "text-muted-foreground"
         )}
       </AnimatePresence>
     </div>
+    </CurrentUserContext.Provider>
   )
 }
