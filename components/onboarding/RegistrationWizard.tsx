@@ -119,18 +119,26 @@ export default function RegistrationWizard({ onBack, onComplete }: { onBack: () 
     e.preventDefault()
     setError(""); setLoading(true)
     try {
+      console.log("1. Creating user...")
       const cred = await createUserWithEmailAndPassword(auth, email, password)
+      console.log("2. Updating profile...")
       await updateProfile(cred.user, { displayName: name })
       let sector = "", company = "", profile: any = {}
       if (role === "investor") { sector = invSectors[0] || ""; profile = { sectors: invSectors, range: invRange, offers: invOffers } }
       else if (role === "professional") { sector = proSector; company = proCompany; profile = { title: proTitle, years: proYears, offers: proOffers } }
       else if (role === "entrepreneur") { sector = bizSector; company = bizName; profile = { stage: bizStage, needs: bizNeeds } }
       else if (role === "student") { profile = { university: studUni, career: studCareer, year: studYear, needs: studNeeds } }
+      
+      console.log("3. Saving to Firestore...")
       await setDoc(doc(db, "users", cred.user.uid), { uid: cred.user.uid, name, email, phone, role, tier: "Miembro", sector, company, profile, createdAt: serverTimestamp(), status: "activo" })
+      console.log("4. Done!")
       onComplete()
     } catch (err: any) {
-      setError(err.code === "auth/email-already-in-use" ? "Este correo ya está en uso." : "Error al crear tu cuenta. Inténtalo de nuevo.")
-    } finally { setLoading(false) }
+      console.error("Error in handleFinish:", err)
+      setError(err.code === "auth/email-already-in-use" ? "Este correo ya está en uso." : `Error: ${err.message || "Inténtalo de nuevo."}`)
+    } finally { 
+      setLoading(false) 
+    }
   }
 
   const handleLogin = async (e: React.FormEvent) => {
