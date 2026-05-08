@@ -1255,6 +1255,8 @@ function CompletionModal({ currentUser, onClose }: { currentUser: Member; onClos
   const [offers, setOffers] = useState<string[]>(currentUser.offers || [])
   const [seeking, setSeeking] = useState<string[]>(currentUser.seeking || [])
   const [isSaving, setIsSaving] = useState(false)
+  const [customOfferText, setCustomOfferText] = useState("")
+  const [customSeekingText, setCustomSeekingText] = useState("")
 
   const PREDEFINED_OFFERS = [
     "Capital Semilla", "Mentoría Estratégica", "Red de Inversionistas", 
@@ -1268,6 +1270,24 @@ function CompletionModal({ currentUser, onClose }: { currentUser: Member; onClos
   const toggleArray = (array: string[], setArray: (val: string[]) => void, item: string) => {
     if (array.includes(item)) setArray(array.filter((i) => i !== item))
     else setArray([...array, item])
+  }
+
+  const handleAddCustomOffer = (e: React.FormEvent) => {
+    e.preventDefault()
+    const trimmed = customOfferText.trim()
+    if (trimmed && !offers.includes(trimmed)) {
+      setOffers([...offers, trimmed])
+    }
+    setCustomOfferText("")
+  }
+
+  const handleAddCustomSeeking = (e: React.FormEvent) => {
+    e.preventDefault()
+    const trimmed = customSeekingText.trim()
+    if (trimmed && !seeking.includes(trimmed)) {
+      setSeeking([...seeking, trimmed])
+    }
+    setCustomSeekingText("")
   }
 
   const handleSave = async () => {
@@ -1290,6 +1310,9 @@ function CompletionModal({ currentUser, onClose }: { currentUser: Member; onClos
     }
   }
 
+  const displayOffers = Array.from(new Set([...PREDEFINED_OFFERS, ...offers]))
+  const displaySeeking = Array.from(new Set([...PREDEFINED_SEEKING, ...seeking]))
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
       <div className="bg-[#111118] border border-[#2A2A3A] rounded-xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl">
@@ -1303,8 +1326,8 @@ function CompletionModal({ currentUser, onClose }: { currentUser: Member; onClos
         <div className="space-y-6">
           <div>
             <h3 className="text-sm font-medium text-emerald-400 mb-3">Lo que ofrezco</h3>
-            <div className="flex flex-wrap gap-2">
-              {PREDEFINED_OFFERS.map(item => (
+            <div className="flex flex-wrap gap-2 mb-3">
+              {displayOffers.map(item => (
                 <button
                   key={item}
                   onClick={() => toggleArray(offers, setOffers, item)}
@@ -1318,12 +1341,28 @@ function CompletionModal({ currentUser, onClose }: { currentUser: Member; onClos
                 </button>
               ))}
             </div>
+            <form onSubmit={handleAddCustomOffer} className="flex gap-2">
+              <input 
+                type="text" 
+                value={customOfferText}
+                onChange={(e) => setCustomOfferText(e.target.value)}
+                placeholder="Añadir otro..." 
+                className="flex-1 bg-[#1A1A24] border border-[#2A2A3A] rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-emerald-500/50"
+              />
+              <button 
+                type="submit"
+                disabled={!customOfferText.trim()}
+                className="bg-[#2A2A3A] text-white px-3 py-1.5 rounded-lg text-sm hover:bg-[#3A3A4A] transition-colors disabled:opacity-50"
+              >
+                +
+              </button>
+            </form>
           </div>
 
           <div>
             <h3 className="text-sm font-medium text-indigo-400 mb-3">Lo que busco</h3>
-            <div className="flex flex-wrap gap-2">
-              {PREDEFINED_SEEKING.map(item => (
+            <div className="flex flex-wrap gap-2 mb-3">
+              {displaySeeking.map(item => (
                 <button
                   key={item}
                   onClick={() => toggleArray(seeking, setSeeking, item)}
@@ -1337,6 +1376,22 @@ function CompletionModal({ currentUser, onClose }: { currentUser: Member; onClos
                 </button>
               ))}
             </div>
+            <form onSubmit={handleAddCustomSeeking} className="flex gap-2">
+              <input 
+                type="text" 
+                value={customSeekingText}
+                onChange={(e) => setCustomSeekingText(e.target.value)}
+                placeholder="Añadir otro..." 
+                className="flex-1 bg-[#1A1A24] border border-[#2A2A3A] rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-indigo-500/50"
+              />
+              <button 
+                type="submit"
+                disabled={!customSeekingText.trim()}
+                className="bg-[#2A2A3A] text-white px-3 py-1.5 rounded-lg text-sm hover:bg-[#3A3A4A] transition-colors disabled:opacity-50"
+              >
+                +
+              </button>
+            </form>
           </div>
 
           <button
