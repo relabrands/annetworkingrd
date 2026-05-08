@@ -35,7 +35,7 @@ import {
 
 // Types
 type MemberTier = "Miembro" | "Empresa" | "Inversor"
-type Sector = "Tecnología" | "Construcción" | "Salud" | "Finanzas" | "Retail" | "Consultoría"
+type Sector = "Tecnología" | "Construcción" | "Salud" | "Finanzas" | "Retail" | "Consultoría" | "Marketing"
 
 interface Member {
   id: string
@@ -228,6 +228,7 @@ const sectorColors: Record<Sector, string> = {
   Finanzas: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
   Retail: "bg-purple-500/20 text-purple-400 border-purple-500/30",
   Consultoría: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
+  Marketing: "bg-blue-500/20 text-blue-400 border-blue-500/30",
 }
 
 // Tier badge colors
@@ -1055,7 +1056,7 @@ function MyMatches({ onSendIntro, onViewDetail }: { onSendIntro: (member: Member
 
 function Profile({ onShowToast }: { onShowToast: (message: string) => void }) {
   const [profileStrength] = useState(72)
-  const sectors: Sector[] = ["Tecnología", "Construcción", "Salud", "Finanzas", "Retail", "Consultoría"]
+  const sectors: Sector[] = ["Tecnología", "Construcción", "Salud", "Finanzas", "Retail", "Consultoría", "Marketing"]
 
   return (
     <div className="space-y-6 max-w-2xl">

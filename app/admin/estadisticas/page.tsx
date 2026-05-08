@@ -27,11 +27,12 @@ const sectorDistribution = [
   { sector: "Consultoría", count: 7, pct: 13 },
   { sector: "Salud", count: 6, pct: 12 },
   { sector: "Retail", count: 5, pct: 10 },
+  { sector: "Marketing", count: 4, pct: 8 },
 ]
 
 const sectorColors = [
   "bg-indigo-500", "bg-emerald-500", "bg-amber-500",
-  "bg-pink-500", "bg-teal-500", "bg-purple-500",
+  "bg-pink-500", "bg-teal-500", "bg-purple-500", "bg-blue-500",
 ]
 
 const maxCount = Math.max(...monthlyMembers.map((m) => m.count))

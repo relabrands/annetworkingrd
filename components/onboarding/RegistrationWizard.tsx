@@ -15,7 +15,7 @@ const ROLES = [
   { id: "student" as UserRole, label: "Estudiante", desc: "Estoy en la universidad y quiero hacer networking", icon: GraduationCap, gradient: "from-pink-500 to-rose-500", border: "border-pink-500", text: "text-pink-400", bg: "bg-pink-500/10" },
 ]
 
-const SECTORS = ["Tecnología", "Construcción", "Salud", "Finanzas", "Retail", "Consultoría", "Bienes Raíces", "Turismo", "Educación", "Manufactura"]
+const SECTORS = ["Tecnología", "Construcción", "Salud", "Finanzas", "Retail", "Consultoría", "Bienes Raíces", "Turismo", "Educación", "Manufactura", "Marketing"]
 
 function Chips({ options, selected, onChange }: { options: string[]; selected: string[]; onChange: (v: string[]) => void }) {
   return (
