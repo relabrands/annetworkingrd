@@ -1433,8 +1433,8 @@ export default function NexusApp() {
     )
   }
 
-  // Show onboarding if not done
-  if (!onboardingDone) {
+  // Show onboarding if not done or if there's no user logged in
+  if (!currentUser || !onboardingDone) {
     return <OnboardingFlow onComplete={handleOnboardingComplete} />
   }
 
