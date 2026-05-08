@@ -1369,35 +1369,45 @@ export default function NexusApp() {
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        const unsubscribeDoc = onSnapshot(doc(db, "users", user.uid), (docSnap) => {
-          if (docSnap.exists()) {
-            const data = docSnap.data()
-            const offers = data.profile?.offers || []
-            const seeking = data.profile?.needs || data.profile?.seeking || []
-            
-            const memberData: Member = {
-              id: user.uid,
-              name: data.name || "",
-              role: data.role === "investor" ? "Inversor" : data.role === "entrepreneur" ? "Emprendedor" : data.role === "professional" ? "Profesional" : data.role === "student" ? "Estudiante" : data.role,
-              company: data.company || "",
-              sector: data.sector || "Tecnología",
-              tier: data.tier || "Miembro",
-              avatar: data.name ? data.name.substring(0, 2).toUpperCase() : "NX",
-              offers: offers,
-              seeking: seeking,
-              bio: data.profile?.bio || "",
-            }
-            
-            setCurrentUser(memberData)
-            
-            if (offers.length === 0 || seeking.length === 0) {
-              setShowCompletionModal(true)
+        const unsubscribeDoc = onSnapshot(doc(db, "users", user.uid), 
+          (docSnap) => {
+            if (docSnap.exists()) {
+              const data = docSnap.data()
+              const offers = data.profile?.offers || []
+              const seeking = data.profile?.needs || data.profile?.seeking || []
+              
+              const memberData: Member = {
+                id: user.uid,
+                name: data.name || "",
+                role: data.role === "investor" ? "Inversor" : data.role === "entrepreneur" ? "Emprendedor" : data.role === "professional" ? "Profesional" : data.role === "student" ? "Estudiante" : data.role,
+                company: data.company || "",
+                sector: data.sector || "Tecnología",
+                tier: data.tier || "Miembro",
+                avatar: data.name ? data.name.substring(0, 2).toUpperCase() : "NX",
+                offers: offers,
+                seeking: seeking,
+                bio: data.profile?.bio || "",
+              }
+              
+              setCurrentUser(memberData)
+              
+              if (offers.length === 0 || seeking.length === 0) {
+                setShowCompletionModal(true)
+              } else {
+                setShowCompletionModal(false)
+              }
             } else {
-              setShowCompletionModal(false)
+              console.warn("User document does not exist!")
+              setCurrentUser(null)
             }
+            setIsLoadingAuth(false)
+          },
+          (error) => {
+            console.error("Error fetching user data:", error)
+            alert("Hubo un error cargando el perfil. Revisa los permisos de Firebase o tu conexión.")
+            setIsLoadingAuth(false)
           }
-          setIsLoadingAuth(false)
-        })
+        )
         return () => unsubscribeDoc()
       } else {
         setCurrentUser(null)
